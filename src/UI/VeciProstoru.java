@@ -98,14 +98,7 @@ public class VeciProstoru extends AnchorPane implements Observer{
                        pomocna++;
                     }
                     
-                    String vstupniPrikaz = "vezmi "+nazev;
-                    String odpovedHry = hra.zpracujPrikaz("vezmi "+nazev);
-
-                
-                    centralText.appendText("\n" + vstupniPrikaz + "\n");
-                    centralText.appendText("\n" + odpovedHry + "\n");
-               
-                    hra.notifyAllObservers();
+                    hra.zpracujPrikaz("vezmi " + nazev);
                 }
                 
                  if(button==MouseButton.SECONDARY) 
@@ -126,14 +119,7 @@ public class VeciProstoru extends AnchorPane implements Observer{
                        pomocna++;
                     }
                     
-                    String vstupniPrikaz = "prozkoumej "+nazev;
-                    String odpovedHry = hra.zpracujPrikaz("prozkoumej "+nazev);
-
-                
-                    centralText.appendText("\n" + vstupniPrikaz + "\n");
-                    centralText.appendText("\n" + odpovedHry + "\n");
-               
-                    hra.notifyAllObservers();
+                    hra.zpracujPrikaz("prozkoumej " + nazev);
                 }
             }
         });

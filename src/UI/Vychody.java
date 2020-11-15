@@ -87,14 +87,7 @@ public class Vychody extends AnchorPane implements Observer{
                        pomocna++;
                     }
                     
-                    String vstupniPrikaz = "jdi "+nazev;
-                    String odpovedHry = hra.zpracujPrikaz("jdi "+nazev);
-
-                
-                    centralText.appendText("\n" + vstupniPrikaz + "\n");
-                    centralText.appendText("\n" + odpovedHry + "\n");
-               
-                    hra.notifyAllObservers();
+                    hra.zpracujPrikaz("jdi " + nazev);
                 }
    
             }

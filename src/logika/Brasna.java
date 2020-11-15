@@ -4,7 +4,10 @@
  package logika;
  import java.util.List;
  import java.util.ArrayList;
-import utils.Observer;
+
+ import javafx.collections.FXCollections;
+ import javafx.collections.ObservableList;
+ import utils.Observer;
 import utils.Subject;
 
 /*******************************************************************************
@@ -14,14 +17,12 @@ import utils.Subject;
  * @author   Marie Mikešová
  * @version  ZS 2016/2018
  */
-public class Brasna implements Subject
-{
+public class Brasna implements Subject {
     //== Datové atributy (statické i instancí)======================================
     
     private static final int MAXIMUM = 5;    // Maximální počet věcí v brasně
-    private List<Vec> obsah;                 // Seznam věcí v brasně
-        private IHra hra;
-           private List<Observer> listObserveru = new ArrayList<Observer>();
+    private ObservableList<Vec> obsah;                 // Seznam věcí v brasně
+    private List<Observer> listObserveru = new ArrayList<>();
 
     
     //== Konstruktory a tovární metody =============================================
@@ -30,8 +31,7 @@ public class Brasna implements Subject
      *  Konstruktor ....
      */
     public Brasna() {
-        obsah = new ArrayList<Vec>();
-       
+        obsah = FXCollections.observableArrayList();
     }
     
     //== Nesoukromé metody (instancí i třídy) ======================================
@@ -44,19 +44,12 @@ public class Brasna implements Subject
      * 
      * 
      */
-    
-
-    
     public Vec vlozVec(Vec vkladana) {
-        if (neniPlno()) {    
-            
+        if (!jePlno()) {
             obsah.add(vkladana);
             notifyAllObservers();
             return vkladana;
-            
-           
         }
-       
         return null;
     }
     
@@ -65,11 +58,8 @@ public class Brasna implements Subject
      * 
      * @return  true  není-li plná.
      */
-     public boolean neniPlno() {
-        if (obsah.size() < MAXIMUM) {
-            return true;   
-        }        
-        return false;
+     private boolean jePlno() {
+         return obsah.size() >= MAXIMUM;
     }
     
     /**
@@ -93,11 +83,11 @@ public class Brasna implements Subject
      * @return   veci      seznam všech věcí v inventáři
      */
     public String getVeci() {
-        String veci = "";
+        StringBuilder veci = new StringBuilder();
         for (Vec aktualni: obsah) {
-            veci += " " + aktualni.getNazev();
+            veci.append(" ").append(aktualni);
         }
-        return veci;
+        return veci.toString();
     }
     
     /**
@@ -138,22 +128,12 @@ public class Brasna implements Subject
         return smazana;
     }
     
-    /**
-     * Metoda vrací maximální počet věcí, které lze přidat do inventáře.
-     * 
-     * @return  počet věcí
-     */
-    public int getMaxVeci() {
-        return MAXIMUM;
-    }
-    
-    
         /**
      * Getter, který vrací seznam všech věcí v brašně
      * @return  obsah - samotný list
      */
-    public List<Vec> getSeznamVeci(){
-    return obsah;
+    public ObservableList<Vec> getSeznamVeci() {
+        return obsah;
     }
     
      /**vytvoření nového observeru
@@ -178,9 +158,5 @@ public class Brasna implements Subject
         for (Observer listObserveruItem : listObserveru) {
             listObserveruItem.update();
         }
-
+    }
 }
-}
-
-    
-

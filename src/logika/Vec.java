@@ -1,6 +1,9 @@
 /* Soubor je ulozen v kodovani UTF-8.
  * Kontrola kódování: Příliš žluťoučký kůň úpěl ďábelské ódy. */
 package logika;
+import javafx.scene.image.Image;
+import main.Main;
+
 import java.util.Collection;
 import java.util.ArrayList;
 
@@ -19,7 +22,7 @@ public class Vec
     private boolean viditelna;
     
     // Kolekce věcí, které jsou uvnitř určité jiné věci.
-    private Collection<Vec> uvnitr; 
+    private Collection<Vec> uvnitr;
     
     //== Konstruktory a tovární metody =============================================
 
@@ -39,7 +42,26 @@ public class Vec
         this.uvnitr = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return nazev;
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Vec)) {
+            return false;
+        }
+        Vec vec = (Vec) obj;
+        return vec.nazev.equals(this.nazev);
+    }
+
+    public Image getImage() {
+        return new Image(Main.class.getResourceAsStream("/zdroje/" + this + ".jpg"));
+    }
 
     //== Nesoukromé metody (instancí i třídy) ======================================
     /**
@@ -123,5 +145,11 @@ public class Vec
     }
     //== Soukromé metody (instancí i třídy) ========================================
 
+    public String poloz() {
+        return "polož " + this;
+    }
 
+    public String pouzij() {
+        return "použij " + this;
+    }
 }
