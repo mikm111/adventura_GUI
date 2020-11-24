@@ -40,7 +40,8 @@ public class TextoveRozhrani {
 
         while (!hra.konecHry()) {
             String radek = prectiString();
-            System.out.println(hra.zpracujPrikaz(radek));
+            // TODO: 1
+//            System.out.println(hra.zpracujPrikaz(radek));
         }
 
         System.out.println(hra.vratEpilog());

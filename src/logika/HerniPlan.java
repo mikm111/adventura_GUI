@@ -230,6 +230,5 @@ public class HerniPlan implements Subject {
         for (Observer listObserveruItem : listObserveru) {
             listObserveruItem.update();
         }
-
-}
+    }
 }

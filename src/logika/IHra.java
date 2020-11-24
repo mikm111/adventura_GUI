@@ -45,7 +45,7 @@ public interface IHra
      *@param  radek  text, který zadal uživatel jako příkaz do hry.
      *@return          vrací se řetězec, který se má vypsat na obrazovku
      */
-     public String zpracujPrikaz(String radek);
+     void zpracujPrikaz(String radek);
    
     
      /**

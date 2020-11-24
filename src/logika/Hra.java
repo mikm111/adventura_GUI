@@ -4,6 +4,7 @@ package logika;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import utils.Observer;
 import utils.Subject;
 
@@ -25,13 +26,15 @@ public class Hra implements IHra, Subject{
     private boolean konecHry = false;      // změna na true, při výhře i prohře
     private int body = 0;                  //původní stav karmy
     private boolean vyhral = false;  
-     private List<Observer> listObserveru = new ArrayList<Observer>();
+    private List<Observer> listObserveru = new ArrayList<Observer>();
 
+    private IText textInteface;
 
     /**
      *  Vytváří hru a inicializuje místnosti (prostřednictvím třídy HerniPlan) a seznam platných příkazů.
      */
-    public Hra() {
+    public Hra(IText textInterface) {
+        this.textInteface = textInterface;
         herniPlan = new HerniPlan();
 
         platnePrikazy = new SeznamPrikazu();
@@ -115,30 +118,32 @@ public class Hra implements IHra, Subject{
      *@param  radek  text, který zadal uživatel jako příkaz do hry.
      *@return          vrací se řetězec, který se má vypsat na obrazovku
      */
+    @Override
+    public void zpracujPrikaz(final String radek) {
+        textInteface.print(radek);
 
-     public String zpracujPrikaz(String radek) {
-                            
-        String [] slova = radek.split("[ \t]+");
+        String[] slova = radek.split("[ \t]+");
         String slovoPrikazu = slova[0];
-        String []parametry = new String[slova.length-1];
-        for(int i=0 ;i<parametry.length;i++){
-           	parametry[i]= slova[i+1];  	
+        String[] parametry = new String[slova.length - 1];
+        for (int i = 0; i < parametry.length; i++) {
+            parametry[i] = slova[i + 1];
         }
-        String textKVypsani=" .... ";
+        String textKVypsani = " .... ";
         if (platnePrikazy.jePlatnyPrikaz(slovoPrikazu)) {
-       
+
             IPrikaz prikaz = platnePrikazy.vratPrikaz(slovoPrikazu);
             textKVypsani = prikaz.proved(parametry);
             notifyAllObservers();
-            
-            if(herniPlan.hracVyhral()) {
-            konecHry = true;
+
+            if (herniPlan.hracVyhral()) {
+                konecHry = true;
             }
+        } else {
+            textKVypsani = "Nevím co tím myslíš? Tento příkaz neznám. ";
         }
-        else {
-            textKVypsani="Nevím co tím myslíš? Tento příkaz neznám. ";
-        }
-        return textKVypsani;
+
+        textInteface.print(textKVypsani);
+        notifyAllObservers();
     }
     
      /**
@@ -222,6 +227,5 @@ public class Hra implements IHra, Subject{
         for (Observer listObserveruItem : listObserveru) {
             listObserveruItem.update();
         }
-
-}
+    }
 }

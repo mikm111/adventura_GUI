@@ -31,6 +31,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import logika.Hra;
 import logika.IHra;
+import logika.IText;
 import uiText.TextoveRozhrani;
 
 /**
@@ -40,7 +41,7 @@ import uiText.TextoveRozhrani;
  * @author     Marie Mikešová
  * @version    ZS 2017/2018
  */
-public class Main extends Application {
+public class Main extends Application implements IText {
 
     private Mapa mapa;
     private MenuPole menu;
@@ -61,18 +62,15 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-
         this.primaryStage = primaryStage;
-        hra = new Hra();
+        hra = new Hra(this);
         centerText = new TextArea();
         centerText.setText(hra.vratUvitani());
         centerText.setEditable(false);
-        
-        
 
         mapa = new Mapa(hra);
         menu = new MenuPole(this);
-        inventar = new Inventar(hra,centerText);
+        inventar = new Inventar(hra);
         prostory = new VeciProstoru(hra,centerText);
         aktualniProstor = new AktualniProstor (hra);
         vychody = new Vychody (hra,centerText);
@@ -95,19 +93,13 @@ public class Main extends Application {
             
             @Override
             public void handle(ActionEvent event) {
-
-                String zadanyPrikaz = zadejPrikazTextField.getText();
-                String odpoved = hra.zpracujPrikaz(zadanyPrikaz);
-                
-                centerText.appendText("\n" + zadanyPrikaz + "\n");
-                centerText.appendText("\n" + odpoved + "\n");
+                hra.zpracujPrikaz(zadejPrikazTextField.getText());
                 
                 zadejPrikazTextField.setText("");
                 
                 if(hra.konecHry()){
                     zadejPrikazTextField.setEditable(false);
                 }
-                
             }
         });
         
@@ -180,9 +172,10 @@ public class Main extends Application {
             launch(args);
         } else {
             if (args[0].equals("-text")) {
-                IHra hra = new Hra();
-                TextoveRozhrani textoveRozhrani = new TextoveRozhrani(hra);
-                textoveRozhrani.hraj();
+//                TODO: 1
+//                IHra hra = new Hra();
+//                TextoveRozhrani textoveRozhrani = new TextoveRozhrani(hra);
+//                textoveRozhrani.hraj();
             } else {
                 System.out.println("Neplatny parametr");
                 System.exit(1);
@@ -197,14 +190,13 @@ public class Main extends Application {
      */
     
     public void novaHra() {
-        hra = new Hra();
+        hra = new Hra(this);
         centerText.setText(hra.vratUvitani());
         mapa.novaHra(hra);
         vychody.novaHra(hra);
         inventar.novaHra(hra);
         prostory.novaHra(hra);
         aktualniProstor.novaHra(hra);
-        
     }
 
     /**
@@ -215,4 +207,10 @@ public class Main extends Application {
         return primaryStage;
     }
 
+   @Override
+    public void print(String text) {
+        centerText.appendText("\n");
+        centerText.appendText(text);
+        centerText.appendText("\n");
+    }
 }

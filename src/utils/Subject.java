@@ -21,5 +21,4 @@ public interface Subject {
     void deleteObserver (Observer observer);
     /**upozornění observerů na změny*/
     void notifyAllObservers();
-    
 }
